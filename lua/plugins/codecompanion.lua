@@ -16,12 +16,16 @@ return {
   },
 
   opts = {
-    log_level = "INFO",
+    -- 注意：log_level / language 属于 config.opts.*，必须套在 opts 子表里。
+    -- 写在根层级会被静默忽略（根层级只认 adapters/interactions/mcp/display/extensions/opts）。
+    opts = {
+      log_level = "INFO",
 
-    -- LLM 非代码文本回复使用的语言（会写进默认 system prompt：
-    -- "All non-code text responses must be written in the <language> language."）
-    -- 默认是 "English"，所以发中文也会用英/日/韩回应，这里改成中文修正。
-    language = "中文",
+      -- LLM 非代码文本回复使用的语言（会写进默认 system prompt：
+      -- "All non-code text responses must be written in the <language> language."）
+      -- 默认是 "English"，所以发中文也会用英/日/韩回应，这里改成中文修正。
+      language = "中文",
+    },
 
     -- codecompanion-history.nvim：自动保存 / 恢复历史对话，误关 chat 可找回
     extensions = {

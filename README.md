@@ -1,9 +1,7 @@
 # 💤 LazyVim
-   
+
 A starter template for [LazyVim](https://github.com/LazyVim/LazyVim).
 Refer to the [documentation](https://lazyvim.github.io/installation) to get started.
-
-# 我的 Neovim (LazyVim) 备忘录
 
 > Leader 键 = **空格 `<Space>`**。文档里写 `<leader>` 就是按空格。
 > **记不住键时的终极大招**:先按一下 `空格`,**停住别动**,屏幕下方会弹出菜单(which-key)告诉你接下来能按什么。这是新手最该养成的习惯!
@@ -12,51 +10,7 @@ Refer to the [documentation](https://lazyvim.github.io/installation) to get star
 
 ## 一、备份配置
 
-你的配置就在 `~/.config/nvim`,它已经是个 git 仓库,但**远程目前指向 LazyVim 官方模板,不是你自己的**,所以现在 push 不上去。先做一次性设置,以后备份就是三条命令。
-
-### 1. 一次性:绑定到你自己的 GitHub 仓库
-
-**方法 A — 用 `gh`(已登录 GitHub CLI 时最简单):**
-```bash
-cd ~/.config/nvim
-gh repo create my-nvim-config --private --source=. --remote=origin --push
-```
-这条会自动建一个私有仓库、改好 remote、并推送。
-
-**方法 B — 手动:**
-1. 去 https://github.com/new 建一个空仓库(比如叫 `my-nvim-config`,选 Private,**不要**勾初始化 README)。
-2. 然后:
-```bash
-cd ~/.config/nvim
-git remote set-url origin https://github.com/<你的用户名>/my-nvim-config.git
-git add -A
-git commit -m "我的 LazyVim 配置初始备份"
-git push -u origin main
-```
-
-> 提示:`lazy-lock.json` **要一起提交**(锁定插件版本,换机器能装出一模一样的环境)。
-
-### 2. 以后每次备份(改完配置后)
-```bash
-cd ~/.config/nvim
-git add -A
-git commit -m "改了什么就写什么"
-git push
-```
-
-### 3. 在新电脑 / 重装后恢复
-```bash
-git clone https://github.com/<你的用户名>/my-nvim-config.git ~/.config/nvim
-nvim   # 首次打开会自动按 lazy-lock.json 安装所有插件
-```
-
-### 4. 偷懒备份(不想用 git 时)
-直接打包整个目录:
-```bash
-cp -r ~/.config/nvim ~/nvim-backup-$(date +%Y%m%d)
-```
-
----
+配置在 `~/.config/nvim`，它已经是个 git 仓库，但远程默认指向 LazyVim 官方模板，需要通过 `git remote set-url origin <url>` 来绑定为自己的仓库。
 
 ## 二、LazyVim / 插件管理
 
@@ -75,7 +29,48 @@ cp -r ~/.config/nvim ~/nvim-backup-$(date +%Y%m%d)
 
 ---
 
-## 三、最常用快捷键速查(LazyVim 默认)
+## 三、常用插件一览
+
+### LazyVim 默认核心插件(开箱即用)
+| 插件 | 作用 |
+|---|---|
+| lazy.nvim | 插件管理器(`:Lazy`) |
+| snacks.nvim | 全家桶:启动页 / picker / 通知 / 终端 / LazyGit 集成 / 图片预览 |
+| which-key.nvim | 按键提示菜单(按 `<leader>` 停住会自动弹) |
+| neo-tree.nvim | 左侧文件树(`<leader>e`) |
+| snacks picker | 模糊查找文件 / 内容(LazyVim 默认已替代 telescope) |
+| nvim-treesitter | 语法高亮 / 缩进 / 结构化选区 |
+| nvim-lspconfig + mason.nvim | LSP 跳转/补全/诊断；Mason 负责装语言服务器 |
+| blink.cmp | 自动补全引擎 |
+| conform.nvim | 代码格式化(`<leader>cf`) |
+| nvim-lint | 异步 linter(代码/拼写检查) |
+| gitsigns.nvim | 行内 git 标记 + hunk 暂存/预览 |
+| mini.pairs / surround / ai | 自动括号 / 环绕符号 / 增强文本对象 |
+| flash.nvim | 闪电跳转(按 `s` + 字符) |
+| trouble.nvim | 诊断 / 引用集中列表面板 |
+| grug-far.nvim | 项目级搜索替换(`<leader>sr`) |
+| todo-comments.nvim | 高亮 `TODO` / `FIX` / `NOTE` 等标记 |
+| lualine.nvim | 底部状态栏 |
+| bufferline.nvim | 顶部 buffer 标签栏 |
+| noice.nvim | 命令行 / 通知 / 弹窗 UI 美化 |
+| tokyonight.nvim | 配色方案(你设的是 `moon` 风格) |
+
+### 你额外添加的插件(`lua/plugins/` 下)
+| 插件 | 配置文件 | 作用 |
+|---|---|---|
+| codecompanion.nvim | `codecompanion.lua` | AI 聊天 / CLI(接 Claude Code) |
+| yazi.nvim | `yazi.lua` | 终端文件管理器(`<leader>-`) |
+| toggleterm.nvim | `toggleterm.lua` | 浮动 / 分屏终端(`Ctrl+\`) |
+| treesj | `treesj.lua` | 一键拆分 / 合并代码块(`<leader>m`) |
+| autolist.nvim | `markdown-writing.lua` | Markdown 列表自动续行 / 编号 |
+| vim-table-mode | `markdown-writing.lua` | Markdown 表格自动对齐(`<leader>tm`) |
+| crates.nvim | `rust.lua` | `Cargo.toml` 依赖版本提示 / 补全 |
+| rustaceanvim | `rust.lua` | Rust 增强 LSP(rust-analyzer + 调试) |
+| rest.nvim | `rest.lua` | 在编辑器里发 HTTP 请求(`.http` 文件) |
+
+---
+
+## 四、常用快捷键速查(LazyVim 默认)
 
 ### 文件 / 查找
 | 键 | 作用 |
@@ -137,9 +132,9 @@ cp -r ~/.config/nvim ~/nvim-backup-$(date +%Y%m%d)
 
 ---
 
-## 四、我自己配置的自定义快捷键
+## 五、自定义快捷键
 
-> 这些是你在 `lua/plugins/` 里额外加的,默认 LazyVim 没有。
+> 这些是在 `lua/plugins/` 里额外加的，默认 LazyVim 没有。
 
 ### 文件管理器 yazi(`yazi.lua`)
 | 键 | 作用 |
@@ -184,14 +179,81 @@ cp -r ~/.config/nvim ~/nvim-backup-$(date +%Y%m%d)
 
 ---
 
-## 五、新手最该记住的 5 件事
+## 六、LazyGit & LazyDocker(终端 TUI)
 
-1. **不知道按什么 → 按 `空格` 等菜单弹出**(which-key)。
-2. **退出编辑模式 → `Esc`**(或 `jk`,LazyVim 默认插入模式快速退出)。
-3. **保存 → `<leader>w`;退出 → `<leader>qq`**。
-4. **出问题先 `:checkhealth` 和 `:Lazy`** 看红色报错。
-5. **每次改完配置 → git commit + push 备份**(见第一节)。
+LazyGit / LazyDocker 都是独立的命令行 TUI 工具，操作逻辑相通：**左侧是面板列表，`Tab` 或 `[` `]` 切面板，`↑↓`/`jk` 选条目，回车进入，`q` 退出,`?` 看全部快捷键**。记不住时随时按 `?`。
+
+### 启动方式
+| 工具 | 在 Neovim 里 | 在普通终端 |
+|---|---|---|
+| LazyGit | `<leader>gg`(snacks 内置集成) | `lazygit` |
+| LazyDocker | 暂未配快捷键,可在 toggleterm(`Ctrl+\`)里敲 `lazydocker` | `lazydocker` |
+
+> 想给 LazyDocker 加快捷键,可以新建 `lua/plugins/lazydocker.lua` 用 `Snacks.terminal("lazydocker")` 包一个 keymap;需要的话我可以帮你配。
+
+### LazyGit 常用操作
+面板(`1`~`5` 可直接跳):`1` 状态 / `2` 文件 / `3` 分支 / `4` 提交 / `5` 储藏(stash)。
+
+| 键 | 作用 | 在哪个面板 |
+|---|---|---|
+| `空格` | 暂存 / 取消暂存选中文件(stage/unstage) | 文件面板 |
+| `a` | 暂存 / 取消暂存全部 | 文件面板 |
+| `回车` | 展开文件看逐行 diff；再 `空格` 可按行暂存 | 文件面板 |
+| `c` | 提交(写 commit message) | 文件面板 |
+| `A` | 修补上一次提交(amend) | 文件面板 |
+| `d` | 丢弃改动 / 还原文件 | 文件面板 |
+| `P` / `p` | 推送 push / 拉取 pull | 任意 |
+| `空格` | 检出(checkout)选中分支 | 分支面板 |
+| `n` | 基于当前分支新建分支 | 分支面板 |
+| `M` | 合并选中分支到当前分支 | 分支面板 |
+| `r` | 变基(rebase)到选中分支 | 分支面板 |
+| `回车` | 查看某次提交的文件改动 | 提交面板 |
+| `g` | 交互式 reset 到选中提交(soft/mixed/hard) | 提交面板 |
+| `c` | cherry-pick(配合 `v` 复制提交) | 提交面板 |
+| `s` | 把当前改动存进 stash | 文件 / 储藏面板 |
+| `空格` | 应用(apply)储藏 | 储藏面板 |
+| `+` / `-` | 放大 / 缩小当前面板 | 任意 |
+| `q` | 退出 | 任意 |
+
+> 冲突处理:合并/变基冲突时进文件面板,回车进入冲突文件,用 `空格` 选保留哪一边的块。
+
+#### AI 自动生成 commit message
+LazyGit 本身不内置 AI 生成 commit 功能，通过它的 `customCommands` 机制接了一个自定义脚本来实现 —— 复用 `claude` CLI 的登录态，不需要任何 API key。
+
+用法：在文件面板暂存(`空格`/`a`)好改动后，按 **`Ctrl+a`** → Claude 读取 staged diff 生成 Conventional Commits 信息 → 自动弹出编辑器预填好，审阅/微调后保存即提交(清空内容退出则取消)。
+
+| 键 | 作用 | 在哪个面板 |
+|---|---|---|
+| `Ctrl+a` | AI 生成 commit message(Claude) | 文件面板 |
+
+涉及两个文件:
+
+| 文件 | 作用 |
+|---|---|
+| `~/.local/bin/lazygit-ai-commit` | 取 `git diff --cached` 喂给 `claude -p`，输出规范化的 commit 信息(剥掉代码围栏/首尾空行) |
+| `~/Library/Application Support/lazygit/config.yml` | 绑定 `Ctrl+a` → 执行 `msg="$(lazygit-ai-commit)" && git commit -e -m "$msg"` |
+
+### LazyDocker 常用操作
+面板：容器(Containers)/ 镜像(Images)/ 卷(Volumes)/ 网络(Networks)/ Compose 项目。选中条目后下方实时显示日志、配置、资源占用。
+
+| 键 | 作用 |
+|---|---|
+| `Tab` | 切换左侧面板 |
+| `回车` / 选中 | 在右下查看该容器的日志 / 状态 / 配置 |
+| `d` | 删除选中项(容器 / 镜像 / 卷),弹出菜单确认 |
+| `s` | 停止(stop)选中容器 |
+| `r` | 重启(restart)选中容器 |
+| `p` | 暂停 / 恢复(pause)容器 |
+| `a` | 进入容器内 shell(attach / exec) |
+| `m` | 查看容器日志(更大窗口) |
+| `E` | 在容器里执行命令 |
+| `b` | 对选中项执行批量操作菜单(如 prune 清理) |
+| `x` | 打开当前面板的操作菜单(看有哪些动作) |
+| `[` / `]` | 切换右下角的子标签(日志 / 统计 / env 等) |
+| `+` / `-` | 放大 / 缩小当前面板 |
+| `q` | 退出 |
+
+> 不确定某个面板能做什么,按 `x` 看可用动作菜单,或按 `?` 看全局帮助。
 
 ---
 
-*最后更新:配置目录 `~/.config/nvim`。改完记得备份!*
