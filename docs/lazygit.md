@@ -10,15 +10,16 @@
 | G                  | 打开Pull Request |
 | p                  | git pull         |
 | P                  | git push         |
+|,,/..| 面板中的顶部/底部|
 
 ## 文件面板
 
 | 按键  | 功能                  |
 | ----- | --------------------- |
-| Space | 暂存/取消暂存单个文件 |
+| space | 暂存/取消暂存单个文件 |
 | a     | 全部暂存/取消暂存     |
 | c     | commit                |
-| A     |                       |
+| A     | git commit --amend                      |
 | d     | Discard（丢弃改动）   |
 | Enter | 查看diff              |
 | e     | 编辑文件              |
