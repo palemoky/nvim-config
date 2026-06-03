@@ -197,3 +197,38 @@ LazyGit 本身不内置 AI 生成 commit 功能，通过它的 `customCommands` 
 
 - 补全**菜单弹出**时:`Tab` 选下一项,`回车` 接受。
 - 菜单**没弹**时:`回车` = 纯换行(不会再误替换内容)。
+
+---
+
+## Scratch 临时代码 + 运行(`snacks.lua` / `sniprun.lua`)
+
+想快速验证一小段代码时用 scratch:写完用 sniprun 直接跑,结果内联显示。
+
+### 打开 scratch
+
+| 键           | 作用                                       |
+| ------------ | ------------------------------------------ |
+| `<leader>.`  | 打开/切换上一个 scratch(默认 markdown)     |
+| `<leader>S`  | 从已有 scratch 列表里选                     |
+| `<Ctrl>x` | 删除选中的 scratch |
+| `<leader>rp/rg/rj/rs/rl` | 新建/打开 Python/Go/JavaScript/Rust/Lua scratch               |
+
+打开 scratch 时，默认会创建与当前文件相同类型的格式（可通过上述自定义按键创建指定类型的文件），如果当前没有打开文件，就创建 markdown。scratch 文件会被持久化保存在磁盘上。
+
+### 运行代码(sniprun)
+
+scratch 默认只能运行 Lua 代码，安装 sniprun 插件后可以在 scratch 运行任何代码。
+
+
+| 键                  | 作用                                   |
+| ------------------- | -------------------------------------- |
+| (可视模式)`<leader>r` | 跑**选中**的代码块(最常用)           |
+| `<leader>rr`        | 跑**当前行**                           |
+| `<leader>ra`        |  运行整段 scratch                          |
+| `<leader>rL`        | 切换 live 模式(边写边自动跑)           |
+| `<leader>rc`        | 关闭内联结果                           |
+| `<leader>rq`        | 重置后端(卡住时)                       |
+
+
+成功结果以行尾虚拟文本显示,报错弹底部 terminal。各语言依赖对应解释器在 `PATH` 里:Python→`python3`、JS→`node`、Go→`go run`、Rust→`cargo`/`rustc`。
+
