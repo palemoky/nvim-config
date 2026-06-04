@@ -232,3 +232,38 @@ scratch 默认只能运行 Lua 代码，安装 sniprun 插件后可以在 scratc
 
 成功结果以行尾虚拟文本显示,报错弹底部 terminal。各语言依赖对应解释器在 `PATH` 里:Python→`python3`、JS→`node`、Go→`go run`、Rust→`cargo`/`rustc`。
 
+---
+
+## Markdown 数学公式渲染(LaTeX)
+
+在 markdown 里写的 LaTeX 数学公式，可以由 `snacks.image`(`snacks.lua`)直接在编辑器里内联渲染成图片。
+
+```markdown
+行内公式 $E = mc^2$
+
+块级公式：
+$$
+\int_0^1 x^2 \, dx = \frac{1}{3}
+$$
+```
+
+光标离开公式所在行后显示渲染好的图片，移回该行则恢复成原始 LaTeX 方便编辑。
+
+### 渲染链路
+
+`treesitter 识别公式节点` → `tectonic 编译成 PDF` → `magick 转图片` → `终端图形协议显示`。
+
+四环缺一不可，少任意一个公式都不会渲染。
+
+### 依赖
+
+| 依赖                | 作用                       | 安装                        |
+| ------------------- | -------------------------- | --------------------------- |
+| `latex` parser      | 让 treesitter 定位公式节点 | 已加入 `markdown.lua` 的 `ensure_installed` |
+| `tree-sitter` CLI   | 新版 treesitter 编译 parser 用 | `brew install tree-sitter-cli` |
+| `tectonic`          | 把 LaTeX 编译成 PDF        | `brew install tectonic`     |
+| `magick`(ImageMagick) | PDF 转图片               | `brew install imagemagick`  |
+| 支持图形协议的终端  | 内联显示图片(Ghostty/kitty 等) | —                       |
+
+> 排查:跑 `:checkhealth snacks`，image 一节出现 `LaTeX math equations are supported` 即配置就绪。
+

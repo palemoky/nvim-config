@@ -10,4 +10,14 @@ return {
       opts.linters_by_ft["markdown.mdx"] = {}
     end,
   },
+
+  -- snacks.image 渲染 markdown 里的 LaTeX 数学公式需要 latex parser 来定位公式节点，
+  -- 再交给 tectonic 编译成图片。少了它公式不会被识别，也就不渲染。
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
+      table.insert(opts.ensure_installed, "latex")
+    end,
+  },
 }
