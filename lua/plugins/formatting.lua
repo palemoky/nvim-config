@@ -32,6 +32,13 @@ return {
           return { "prettier", "markdownlint-cli2", "markdown-toc" }
         end,
       },
+      formatters = {
+        -- mdformat normalises every ordered-list marker to "1." by default;
+        -- --number keeps the manual 1. 2. 3. consecutive numbering instead.
+        mdformat = {
+          prepend_args = { "--number" },
+        },
+      },
     },
   },
 

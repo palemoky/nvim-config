@@ -21,7 +21,6 @@ return {
           vim.keymap.set("n", "o", "o<cmd>AutolistNewBullet<cr>", o)
           vim.keymap.set("n", "O", "O<cmd>AutolistNewBulletBefore<cr>", o)
           vim.keymap.set("n", "<CR>", "<cmd>AutolistToggleCheckbox<cr><CR>", o)
-          vim.keymap.set("n", "<C-r>", "<cmd>AutolistRecalculate<cr>", o)
           vim.keymap.set("n", ">>", ">><cmd>AutolistRecalculate<cr>", o)
           vim.keymap.set("n", "<<", "<<<cmd>AutolistRecalculate<cr>", o)
           vim.keymap.set("n", "dd", "dd<cmd>AutolistRecalculate<cr>", o)

@@ -10,9 +10,9 @@ return {
         opts = {
             filesystem = {
                 filtered_items = {
-                    visible = true, -- 显示被过滤的项（点文件等会以暗色显示）；按 H 可临时切换
-                    hide_dotfiles = false, -- 显示 .gitignore / .env 这类点文件
-                    hide_gitignored = false, -- 显示被 .gitignore 忽略的文件
+                    visible = true, -- 默认显示被过滤的项（点文件等以暗色显示）；按 H 在显示/隐藏间切换
+                    hide_dotfiles = true, -- 把点文件标记为“被过滤项”，这样 H 才能隐藏它们（visible=true 时仍默认显示）
+                    hide_gitignored = true, -- 把 gitignore 文件标记为“被过滤项”，同样受 H 控制
                     never_show = { ".DS_Store" }, -- 始终隐藏 .DS_Store（即使 visible/hide_dotfiles 设置为显示）
                 },
             },
