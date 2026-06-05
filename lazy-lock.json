@@ -67,5 +67,5 @@
   "vim-table-mode": { "branch": "master", "commit": "bb025308a45c67c7c8f0763ba37bc2ee3f534df0" },
   "which-key.nvim": { "branch": "main", "commit": "3aab2147e74890957785941f0c1ad87d0a44c15a" },
   "yanky.nvim": { "branch": "main", "commit": "b13d318dc7c816e2eee626dde61fa0a7237bc77e" },
-  "yazi.nvim": { "branch": "main", "commit": "9ea49c7c59dd02d04833da126fd75cb68ef41129" }
+  "yazi.nvim": { "branch": "main", "commit": "a2bafeab368722d86298e79731fd4e244d4d895a" }
 }
