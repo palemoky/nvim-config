@@ -12,3 +12,10 @@ vim.keymap.set("n", "gx", function()
     vim.notify("No URL found on the current line", vim.log.levels.WARN)
   end
 end, { desc = "Open URL on line" })
+
+-- 终端模式下也能用 <C-h/j/k/l> 切窗口（先退出 terminal 模式再跳）
+-- 方便从 CodeCompanion CLI / ClaudeCode 终端一键切回代码窗口
+vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "Go to left window" })
+vim.keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j", { desc = "Go to lower window" })
+vim.keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "Go to upper window" })
+vim.keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Go to right window" })
