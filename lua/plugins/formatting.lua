@@ -26,10 +26,10 @@ return {
           local path = vim.api.nvim_buf_get_name(bufnr)
           for _, root in ipairs(mkdocs_roots) do
             if path:sub(1, #root) == root then
-              return { "mdformat" }
+              return { "mdformat", "autocorrect" }
             end
           end
-          return { "prettier", "markdownlint-cli2", "markdown-toc" }
+          return { "prettier", "markdownlint-cli2", "markdown-toc", "autocorrect" }
         end,
       },
       formatters = {
@@ -37,6 +37,14 @@ return {
         -- --number keeps the manual 1. 2. 3. consecutive numbering instead.
         mdformat = {
           prepend_args = { "--number" },
+        },
+        -- autocorrect: 在中英文/数字之间加「盘古之白」并规范标点。
+        -- 放在格式化链最后定稿。--stdin 从 STDIN 读、纠正后写回 STDOUT（必须显式
+        -- 给 --type，stdin 模式下无法从扩展名推断）；切勿加 --fix，那会往 stdout
+        -- 混入 "AutoCorrect spend time..." 计时行污染 buffer。brew 安装，走 PATH。
+        autocorrect = {
+          command = "autocorrect",
+          args = { "--stdin", "--type", "markdown" },
         },
       },
     },
