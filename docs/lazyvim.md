@@ -284,3 +284,31 @@ $$
 
 > 排查:跑 `:checkhealth snacks`，image 一节出现 `LaTeX math equations are supported` 即配置就绪。
 
+---
+
+## Markdown 中英文排版（盘古之白 / autocorrect）
+
+保存 markdown 时自动在中英文、中文与数字之间补上空格（「盘古之白」），并规范标点，让中英混排更整齐。
+
+```text
+标题Hello世界         → 标题 Hello 世界
+这是test测试123混排   → 这是 test 测试 123 混排
+```
+
+由 [`autocorrect`](https://github.com/huacnlee/autocorrect) 完成，接进 `conform.nvim` 作为 markdown 格式化链的**最后一步**（排在 prettier / mdformat 之后定稿），配置在 `formatting.lua`。LazyVim 默认保存即格式化，所以 `<leader>cf` 或直接 `:w` 都会触发；也可手动 `:lua require('conform').format()`。
+
+### 依赖
+
+| 依赖         | 作用                     | 安装                       |
+| ------------ | ------------------------ | -------------------------- |
+| `autocorrect` | 中英文加空格 / 规范标点 | `brew install autocorrect` |
+
+> 必须在 `PATH` 上。终端里启动 nvim 没问题；若用 GUI 版（Neovide/VimR）不生效，多半是 GUI 没继承 shell 的 `PATH`。
+
+### 实现要点
+
+- 走 stdin 模式：`autocorrect --stdin --type markdown`，从 STDIN 读、纠正后写回 STDOUT。
+- **切勿加 `--fix`**：那会往 stdout 混入一行 `AutoCorrect spend time...` 计时信息，污染 buffer。
+- stdin 模式无法从扩展名推断类型，必须显式给 `--type markdown`。
+- 想自定义规则（某些专有名词不纠正等），在仓库根放 `.autocorrectrc`（`autocorrect init` 生成），CLI 会自动读取。
+
