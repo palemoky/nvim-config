@@ -314,27 +314,27 @@ $$
 
 ---
 
-## 普通模式自动切回英文输入法（`im-select.lua`）
+## 普通模式自动切回英文输入法（`macism.lua`）
 
 解决「插入模式打完中文，按 `Esc` 回普通模式时输入法还停在中文、`j/k/dd` 等命令失效」的问题。离开插入模式自动切到英文键盘，重新进入时恢复之前的中文输入法。
 
-由 [`im-select.nvim`](https://github.com/keaising/im-select.nvim) 完成，配置在 `im-select.lua`。
+由 [`im-select.nvim`](https://github.com/keaising/im-select.nvim) 完成，配置在 `macism.lua`。
 
 ### 依赖
 
-| 依赖        | 作用                   | 安装                                                  |
-| ----------- | ---------------------- | ----------------------------------------------------- |
-| `im-select` | 命令行查询 / 切换输入法 | `brew tap daipeihust/tap && brew install im-select`   |
+| 依赖     | 作用                   | 安装                  |
+| -------- | ---------------------- | --------------------- |
+| `macism` | 命令行查询 / 切换输入法 | `brew install macism` |
 
-> 查看某个输入法的 key：在该输入法下运行 `im-select`。英文键盘通常是 `com.apple.keylayout.ABC`。
+`macism` 用 Swift 编写、仍在维护，修了系统输入法切换的若干 bug，切换可靠。**macOS 上插件默认就调用 `macism`**（见源码 `OS_CONFIGS.macOS`），所以装好后 `opts` 里无需写 `default_command`。
 
-### 实现要点 / 踩坑
+> 查看某个输入法的 key：在该输入法下运行 `macism`。英文键盘通常是 `com.apple.keylayout.ABC`。
 
-- **macOS 上插件默认调用的是 `macism` 而不是 `im-select`**（见源码 `OS_CONFIGS.macOS`）。若只装了 `im-select`，插件找不到 `macism` 会**静默退出、autocmd 不注册**——表现为「装好了却完全没反应」。
-- 解法：在 `opts` 里显式 `default_command = "im-select"`；或改装 `macism`（`brew tap laishulu/homebrew && brew install macism`）后删掉这行。
+### 实现要点
+
 - `default_im_select` 设为普通模式要切到的英文键盘 key（`com.apple.keylayout.ABC`）。
 - 事件：`InsertLeave` / `CmdlineLeave` 切英文，`InsertEnter` 恢复之前输入法。
-- 排查时先确认两件事：`which im-select` 能找到、`ls ~/.local/share/nvim/lazy/im-select.nvim` 已安装；再看 `:messages` 有无报错。
+- 排查时先确认两件事：`which macism` 能找到、`ls ~/.local/share/nvim/lazy/im-select.nvim` 已安装；再看 `:messages` 有无报错。
 
 ---
 
