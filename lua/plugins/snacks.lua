@@ -44,6 +44,29 @@ return {
   },
 
   opts = {
+    -- picker（含通知历史 Snacks.picker.notifications）的窗口/按键定制
+    picker = {
+      win = {
+        -- 输入框里按 Tab：聚焦右侧预览（默认是 select_and_next，这里改成聚焦预览）
+        input = {
+          keys = {
+            ["<Tab>"] = { "focus_preview", mode = { "i", "n" } },
+          },
+        },
+        -- 列表里按 Tab：同样聚焦预览
+        list = {
+          keys = {
+            ["<Tab>"] = "focus_preview",
+          },
+        },
+        preview = {
+          wo = { wrap = true }, -- 预览默认换行，长内容不再被右侧截断
+          keys = {
+            ["<Tab>"] = "focus_list", -- 在预览里再按 Tab 切回列表
+          },
+        },
+      },
+    },
     -- 终端内图片预览，依赖 Ghostty/kitty 等支持图形协议的终端 + ImageMagick(magick)
     image = {
       enabled = true,

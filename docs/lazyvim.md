@@ -312,3 +312,45 @@ $$
 - stdin 模式无法从扩展名推断类型，必须显式给 `--type markdown`。
 - 想自定义规则（某些专有名词不纠正等），在仓库根放 `.autocorrectrc`（`autocorrect init` 生成），CLI 会自动读取。
 
+---
+
+## 普通模式自动切回英文输入法（`im-select.lua`）
+
+解决「插入模式打完中文，按 `Esc` 回普通模式时输入法还停在中文、`j/k/dd` 等命令失效」的问题。离开插入模式自动切到英文键盘，重新进入时恢复之前的中文输入法。
+
+由 [`im-select.nvim`](https://github.com/keaising/im-select.nvim) 完成，配置在 `im-select.lua`。
+
+### 依赖
+
+| 依赖        | 作用                   | 安装                                                  |
+| ----------- | ---------------------- | ----------------------------------------------------- |
+| `im-select` | 命令行查询 / 切换输入法 | `brew tap daipeihust/tap && brew install im-select`   |
+
+> 查看某个输入法的 key：在该输入法下运行 `im-select`。英文键盘通常是 `com.apple.keylayout.ABC`。
+
+### 实现要点 / 踩坑
+
+- **macOS 上插件默认调用的是 `macism` 而不是 `im-select`**（见源码 `OS_CONFIGS.macOS`）。若只装了 `im-select`，插件找不到 `macism` 会**静默退出、autocmd 不注册**——表现为「装好了却完全没反应」。
+- 解法：在 `opts` 里显式 `default_command = "im-select"`；或改装 `macism`（`brew tap laishulu/homebrew && brew install macism`）后删掉这行。
+- `default_im_select` 设为普通模式要切到的英文键盘 key（`com.apple.keylayout.ABC`）。
+- 事件：`InsertLeave` / `CmdlineLeave` 切英文，`InsertEnter` 恢复之前输入法。
+- 排查时先确认两件事：`which im-select` 能找到、`ls ~/.local/share/nvim/lazy/im-select.nvim` 已安装；再看 `:messages` 有无报错。
+
+---
+
+## snacks picker 用 Tab 在列表 / 预览间切换（`snacks.lua`）
+
+snacks picker（含通知历史 `Snacks.picker.notifications`）默认 `Tab` 是「选中并下移」。改成用 `Tab` 在**输入框 / 列表 ↔ 预览**之间来回聚焦，方便滚动查看长内容。配置在 `snacks.lua` 的 `opts.picker.win`。
+
+| 位置（窗口）   | 按 `Tab`         |
+| -------------- | ---------------- |
+| 输入框 `input` | 聚焦预览         |
+| 列表 `list`    | 聚焦预览         |
+| 预览 `preview` | 切回列表         |
+
+### 实现要点
+
+- `input` 的绑定要同时给 `mode = { "i", "n" }`，否则插入模式下的输入框里 `Tab` 不生效。
+- 动作名：`focus_preview`（聚焦预览）/ `focus_list`（聚焦列表）。
+- 顺手给 `preview.wo = { wrap = true }`，让预览长行换行、不被右侧截断。
+
