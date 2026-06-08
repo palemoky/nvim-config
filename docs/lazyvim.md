@@ -353,3 +353,54 @@ snacks picker（含通知历史 `Snacks.picker.notifications`）默认 `Tab` 是
 - 动作名：`focus_preview`（聚焦预览）/ `focus_list`（聚焦列表）。
 - 顺手给 `preview.wo = { wrap = true }`，让预览长行换行、不被右侧截断。
 
+---
+
+## 多项目 tab 工作流：路径 + buffer 按 tab 隔离
+
+用「一个 tab 一个项目」的方式同时开前端 / 后端等多个工程，让工作目录、buffer 显示、git 操作互不串台。涉及 `persistence.lua`、`scope.lua`、`bufferline.lua` 三个配置。
+
+### 用法
+
+1. 在第一个项目里打开文件（tab 1）。
+2. `<leader><tab><tab>` 新建 tab，`:tcd ~/path/to/另一个项目` 设置**该 tab 的工作目录**。
+3. 在新 tab 里打开第二个项目的文件。
+4. 切 tab 时各项目的 cwd、buffer 列表自动各归各的。
+5. `:qa` 退出会自动存会话，`<leader>qs` 恢复。
+
+### 三层隔离
+
+| 层面          | 靠什么                       | 说明                                                       |
+| ------------- | ---------------------------- | ---------------------------------------------------------- |
+| 工作目录 / git | `:tcd`（tab 级 cwd）          | `:terminal` / `:!git` / lazygit cwd 版都落在该 tab 的仓库  |
+| buffer 显示   | `scope.nvim`（`scope.lua`）  | 在哪个 tab 打开的 buffer 只归该 tab，切走看不到            |
+| 会话恢复      | `persistence.nvim` 三个钩子  | 关 Neo-tree、清残留 buffer、存取 scope 状态               |
+
+> gitsigns、lazygit `<leader>gg`（Root Dir 版）本来就按**文件路径**各算各的，不受全局 cwd 影响；`:tcd` 主要是把「认 cwd」的那部分（终端、`:!git`）也拉到对应项目。
+
+### persistence 的三个钩子（`persistence.lua`）
+
+LazyVim 默认 `<leader>qs` 恢复会话、`<leader>ql` 恢复上次、`<leader>qq` 退出存盘。persistence 默认「叠加恢复、不清场」，配合 Neo-tree 会出问题，用三个 `User` 事件钩子修正：
+
+- **`PersistenceSavePre`**：关掉所有 Neo-tree 窗口（否则被存进 session，恢复后目录被撑得过宽），并 `ScopeSaveState` 把 tab↔buffer 归属写进 `vim.g.ScopeState`。
+- **`PersistenceLoadPre`**：加载前关 Neo-tree，避免和恢复的窗口布局冲突。
+- **`PersistenceLoadPost`**：恢复后清掉 `nvim .` / `nvim` 启动残留的目录 buffer、空 `[No Name]`、遗留的 neo-tree buffer（只清未修改的）。
+
+### scope.nvim（`scope.lua`）
+
+- 原理：靠 `TabLeave`（缓存并 unlist 本 tab 的 buffer）/ `TabEnter`（把缓存的重新 list）切换 `buflisted`，对 bufferline、`:ls`、`:bnext`、picker 全部生效。
+- **必须开 `restore_state = true`**：才会注册 `SessionLoadPost` 钩子，恢复会话时重建归属。
+- 状态存在全局变量 `vim.g.ScopeState`，**退出时不会自动写**，所以要在 persistence 的 `SavePre` 里手动 `ScopeSaveState`；靠 `sessionoptions` 里的 `globals` 一起存进 session（`ScopeState` 首字母大写且含小写，符合 globals 保存规则）。
+- 串台时可 `:ScopeMoveBuf` 把当前 buffer 挪到当前 tab，或切一次 tab 让它重算。
+
+### bufferline 配合 scope（`bufferline.lua`）
+
+- **`always_show_bufferline = true`**：scope 让每个 tab 通常只剩 1 个 buffer，而 LazyVim 默认 `false` 会在 buffer ≤1 时把整条 bufferline（含右上角 tab 指示器）隐藏。必须设 true 才能始终看到 tab 指示器。
+- **`custom_filter`**：常显后启动时空的 `[No Name]` 会露出来，用过滤器把「未命名且未修改」的空 buffer 滤掉；一旦开始编辑或有了文件名就照常显示。
+
+### 排查要点
+
+- 右上角 tab 指示器消失 → 八成是 `always_show_bufferline` 没开（单 buffer 时整条被隐藏）。
+- 恢复后 buffer 串台 / 归属错乱 → 确认 `restore_state = true` 且 `SavePre` 有 `ScopeSaveState`，`sessionoptions` 含 `globals`。
+- 恢复后 `[No Name]` / 目录 buffer 残留 → 看 `PersistenceLoadPost` 的清理是否命中（neo-tree 劫持的 buffer 名可能不是纯目录路径）。
+- 恢复瞬间偶发 `watch.watch: ENOENT` 通知 → Neo-tree git watch 在过渡态路径上的无害提示，不必处理（刻意不屏蔽，以免误吞同期真正的报错）。
+
