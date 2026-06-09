@@ -11,7 +11,7 @@
 | 打开插件管理面板        | `:Lazy`                                     |
 | 更新所有插件            | `:Lazy update`(面板里按 `U`)                |
 | 安装缺失插件            | `:Lazy install`(面板里按 `I`)               |
-| 同步 (装 + 删+更)          | `:Lazy sync`(面板里按 `S`)                  |
+| 同步 (装 + 删 + 更)          | `:Lazy sync`(面板里按 `S`)                  |
 | 查看启动耗时            | `:Lazy profile`                             |
 | 健康检查 (排查问题)      | `:checkhealth`                              |
 | 安装/管理 LSP、格式化器 | `:Mason`                                    |
@@ -60,7 +60,7 @@
 | vim-table-mode     | `markdown-writing.lua` | Markdown 表格自动对齐 (`<leader>tm`)  |
 | crates.nvim        | `rust.lua`             | `Cargo.toml` 依赖版本提示 / 补全     |
 | rustaceanvim       | `rust.lua`             | Rust 增强 LSP(rust-analyzer + 调试)  |
-| rest.nvim          | `rest.lua`             | 在编辑器里发 HTTP 请求 (`.http` 文件) |
+| kulala.nvim        | `kulala.lua`           | 在编辑器里发 HTTP 请求 (`.http` 文件，`<leader>R`) |
 
 ---
 
@@ -403,4 +403,8 @@ LazyVim 默认 `<leader>qs` 恢复会话、`<leader>ql` 恢复上次、`<leader>
 - 恢复后 buffer 串台 / 归属错乱 → 确认 `restore_state = true` 且 `SavePre` 有 `ScopeSaveState`，`sessionoptions` 含 `globals`。
 - 恢复后 `[No Name]` / 目录 buffer 残留 → 看 `PersistenceLoadPost` 的清理是否命中（neo-tree 劫持的 buffer 名可能不是纯目录路径）。
 - 恢复瞬间偶发 `watch.watch: ENOENT` 通知 → Neo-tree git watch 在过渡态路径上的无害提示，不必处理（刻意不屏蔽，以免误吞同期真正的报错）。
+
+---
+
+
 
