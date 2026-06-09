@@ -7,7 +7,7 @@ return {
   "mfussenegger/nvim-lint",
   opts = {
     linters = {
-      ["golangci-lint"] = {
+      golangcilint = {
         condition = function(ctx)
           return not vim.startswith(vim.fs.normalize(ctx.filename), scratch_dir)
         end,
