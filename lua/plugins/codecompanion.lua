@@ -182,11 +182,11 @@ return {
 
   keys = {
     -- Chat
-    { "<leader>ac", "<cmd>CodeCompanionChat<cr>", desc = "CodeCompanion Chat" },
+    { "<leader>aC", "<cmd>CodeCompanionChat<cr>", desc = "CodeCompanion Chat" },
     { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "CodeCompanion Actions" },
     
     -- CLI
-    { "<leader>aC", "<cmd>CodeCompanionCLI<cr>", desc = "CodeCompanion CLI" },
+    { "<leader>ac", "<cmd>CodeCompanionCLI<cr>", desc = "CodeCompanion CLI" },
 
     -- 切换最近一次 chat/cli buffer
     {
