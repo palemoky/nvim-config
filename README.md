@@ -16,3 +16,11 @@
 
 - [LazyDocker](./docs/lazydocker.md)
 
+## 三、终端字体
+
+使用 Ghostty 时，终端的中文默认使用 Pingfang，但兼容性并不好，可以使用专门针对终端优化的 [Maple Font](https://github.com/subframe7536/maple-font/releases)，该字体的含义说明如下：
+- NF：Nerd Font，兼容终端的图标
+- Normal：没有手写字体，默认包含
+- Ligature：自动转换连字符，比如`!=`转换为`≠`
+因此，应该选择 NF-CN 行，Normal-Ligature 或 Normal-No-Ligature 列的字体
+
