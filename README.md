@@ -16,6 +16,8 @@
 
 - [LazyDocker](./docs/lazydocker.md)
 
+- [Yazi](./docs/yazi.md)
+
 ## 三、终端字体
 
 使用 Ghostty 时，终端的中文默认使用 Pingfang，但兼容性并不好，可以使用专门针对终端优化的 [Maple Font](https://github.com/subframe7536/maple-font/releases)，该字体的含义说明如下：
