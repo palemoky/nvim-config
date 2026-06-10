@@ -61,7 +61,6 @@
 | 插件               | 配置文件               | 作用                                 |
 | ------------------ | ---------------------- | ------------------------------------ |
 | codecompanion.nvim | `codecompanion.lua`    | AI 聊天 / CLI(接 Claude Code)        |
-| yazi.nvim          | `yazi.lua`             | 终端文件管理器 (`<leader>-`)          |
 | toggleterm.nvim    | `toggleterm.lua`       | 浮动 / 分屏终端 (`Ctrl+\`)            |
 | treesj             | `treesj.lua`           | 一键拆分 / 合并代码块 (`<leader>m`)   |
 | autolist.nvim      | `markdown-writing.lua` | Markdown 列表自动续行 / 编号         |
@@ -175,13 +174,6 @@ LazyGit 本身不内置 AI 生成 commit 功能，通过它的 `customCommands` 
 ## 四、自定义快捷键
 
 > 这些是在 `lua/plugins/` 里额外加的，默认 LazyVim 没有。
-
-### 文件管理器 yazi(`yazi.lua`)
-
-| 键           | 作用                    |
-| ------------ | ----------------------- |
-| `<leader>-`  | 在当前文件位置打开 yazi |
-| `<leader>cw` | 在工作目录打开 yazi     |
 
 ### 终端 toggleterm(`toggleterm.lua`)
 
