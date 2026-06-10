@@ -24,3 +24,16 @@
 - Ligature：自动转换连字符，比如`!=`转换为`≠`
 因此，应该选择 NF-CN 行，Normal-Ligature 或 Normal-No-Ligature 列的字体
 
+Ghostty 不错的主题：
+| Dark           | Light                   |
+| -------------- | ----------------------- |
+| Adventure      | Belafonte Day           |
+| Apple Classic  | Builtin Solarized Light |
+| **Arthur**     | GruvboxLight            |
+| **Atom**       | iTerm2 Solarized Light  |
+| **Ayu Mirage** | Man Page                |
+| Desert         | Novel                   |
+| NvimDark       | Vimbones                |
+| Teerb          | Violet Light            |
+| Wombat         |                         |
+
