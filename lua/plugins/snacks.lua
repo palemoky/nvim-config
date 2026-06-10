@@ -75,6 +75,26 @@ return {
         enabled = true, -- markdown / latex 文档里的图片也内联显示
         inline = true, -- 直接在文本下方内联渲染
       },
+      -- 公式（math）渲染默认偏大。本机用 tectonic，走 LaTeX 引擎，只有 font_size 一个旋钮。
+      -- 没有「行内/块级」分开的字号；带指数的行内公式偏大时只能整体再降一档。
+      -- 字号档：Large > normalsize > small > footnotesize > scriptsize
+      math = {
+        latex = {
+          -- 字号档：Large > normalsize > small > footnotesize > scriptsize
+          font_size = "small",
+          -- packages 是整体替换默认值，所以要带上原有那几个。
+          packages = {
+            "amsmath",
+            "amssymb",
+            "amsfonts",
+            "amscd",
+            "mathtools",
+            -- "ctex", -- 解开注释让 \text{中文} 能渲染；代价是 ctex 扫描字体集，
+            --            每个新公式编译 +5s（实测 ~4s → ~9s）。注释掉则公式里的
+            --            中文显示为空白。任何切换都会使全部公式缓存失效、重渲一次。
+          },
+        },
+      },
     },
   },
 }
