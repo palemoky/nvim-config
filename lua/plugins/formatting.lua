@@ -26,10 +26,10 @@ return {
           local path = vim.api.nvim_buf_get_name(bufnr)
           for _, root in ipairs(mkdocs_roots) do
             if path:sub(1, #root) == root then
-              return { "mdformat", "autocorrect", "trailing_blank_line" }
+              return { "mdformat", "autocorrect" }
             end
           end
-          return { "prettier", "markdownlint-cli2", "markdown-toc", "autocorrect", "trailing_blank_line" }
+          return { "prettier", "markdownlint-cli2", "markdown-toc", "autocorrect" }
         end,
       },
       formatters = {
@@ -45,13 +45,6 @@ return {
         autocorrect = {
           command = "autocorrect",
           args = { "--stdin", "--type", "markdown" },
-        },
-        -- 收尾：prettier/markdownlint 会把文末收成单个换行，这里把任意数量的
-        -- 末尾换行统一成「正文 + 一个空行」(\n\n)。必须排在格式化链最后，
-        -- 否则前面的步骤会再把多出来的空行删掉。
-        trailing_blank_line = {
-          command = "perl",
-          args = { "-0pe", "s/\\n*\\z/\\n\\n/" },
         },
       },
     },
