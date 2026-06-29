@@ -44,6 +44,13 @@ return {
   },
 
   opts = {
+    -- notifier：接管 vim.notify，把通知显示为右下角悬浮提示（带历史）。
+    -- 不开的话 vim.notify 走默认 cmdline 回显，瞬时消息容易错过
+    -- （例如 CodeCompanion 的「正在思考…」进度提示）。
+    notifier = {
+      enabled = true,
+    },
+
     -- picker（含通知历史 Snacks.picker.notifications）的窗口/按键定制
     picker = {
       win = {

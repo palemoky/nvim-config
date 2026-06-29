@@ -15,6 +15,36 @@ return {
     "CodeCompanionCmd",
   },
 
+  -- 请求进度提示：本体默认不显示「发送中」状态，只发 autocmd 事件，
+  -- 这里用 snacks.notifier 接住，避免不知道是否在等响应而误按第二次发送。
+  init = function()
+    local group = vim.api.nvim_create_augroup("CodeCompanionProgress", { clear = true })
+
+    vim.api.nvim_create_autocmd("User", {
+      group = group,
+      pattern = "CodeCompanionRequestStarted",
+      callback = function()
+        vim.notify("CodeCompanion 正在思考…", vim.log.levels.INFO, {
+          id = "codecompanion_status", -- 同 id 复用同一条通知
+          title = "CodeCompanion",
+          timeout = false, -- 常驻，直到请求结束
+        })
+      end,
+    })
+
+    vim.api.nvim_create_autocmd("User", {
+      group = group,
+      pattern = "CodeCompanionRequestFinished",
+      callback = function()
+        vim.notify("回应完成 ✓", vim.log.levels.INFO, {
+          id = "codecompanion_status",
+          title = "CodeCompanion",
+          timeout = 1500,
+        })
+      end,
+    })
+  end,
+
   opts = {
     -- 注意：log_level / language 属于 config.opts.*，必须套在 opts 子表里。
     -- 写在根层级会被静默忽略（根层级只认 adapters/interactions/mcp/display/extensions/opts）。
@@ -182,11 +212,11 @@ return {
 
   keys = {
     -- Chat
-    { "<leader>aC", "<cmd>CodeCompanionChat<cr>", desc = "CodeCompanion Chat" },
+    { "<leader>ac", "<cmd>CodeCompanionChat<cr>", mode = { "n", "v" }, desc = "CodeCompanion Chat" },
     { "<leader>aa", "<cmd>CodeCompanionActions<cr>", desc = "CodeCompanion Actions" },
-    
+
     -- CLI
-    { "<leader>ac", "<cmd>CodeCompanionCLI<cr>", desc = "CodeCompanion CLI" },
+    { "<leader>aC", "<cmd>CodeCompanionCLI<cr>", desc = "CodeCompanion CLI" },
 
     -- 切换最近一次 chat/cli buffer
     {
