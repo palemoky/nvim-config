@@ -150,7 +150,7 @@ return {
           height = 0.85,
           border = "rounded",
           opts = {
-            number = false,
+            number = true,
             relativenumber = false,
             signcolumn = "no",
             wrap = true,
