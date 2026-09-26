@@ -1,3 +1,14 @@
+-- 侧边栏宽度：按屏幕宽度（vim.o.columns）的百分比计算
+-- run `:lua print(vim.o.columns)` to get the current screen width
+local function sidebar_width()
+    local screen_width = vim.o.columns
+    if screen_width > 200 then
+        return math.floor(screen_width * 0.15)
+    else
+        return math.floor(screen_width * 0.25)
+    end
+end
+
 return {
     {
         "nvim-neo-tree/neo-tree.nvim",
@@ -7,6 +18,22 @@ return {
             "nvim-tree/nvim-web-devicons",
             "MunifTanjim/nui.nvim",
         },
+        init = function()
+            -- neo-tree 只在打开时算一次宽度；终端尺寸变化后按百分比重新调整
+            vim.api.nvim_create_autocmd("VimResized", {
+                group = vim.api.nvim_create_augroup("neo_tree_percent_width", { clear = true }),
+                callback = function()
+                    local width = sidebar_width()
+                    for _, win in ipairs(vim.api.nvim_list_wins()) do
+                        local buf = vim.api.nvim_win_get_buf(win)
+                        if vim.bo[buf].filetype == "neo-tree"
+                            and vim.api.nvim_win_get_config(win).relative == "" then
+                            vim.api.nvim_win_set_width(win, width)
+                        end
+                    end
+                end,
+            })
+        end,
         opts = {
             filesystem = {
                 filtered_items = {
@@ -18,18 +45,8 @@ return {
             },
             window = {
                 position = "left",
-                width = function() -- run `:echo winwidth(0)` to get the current window width
-                    local screen_width = vim.o.columns -- run `:lua print(vim.o.columns)` to get the current screen width
-                    -- Solution 1: Fixed width
-                    -- return 30
-
-                    -- Solution 2: Dyunamic width based on screen width
-                    if screen_width > 200 then
-                        return math.floor(screen_width * 0.15)
-                    else
-                        return math.floor(screen_width * 0.25)
-                    end
-                end,
+                -- 也可以直接写字符串百分比，如 width = "20%"（打开时按屏幕宽度换算）
+                width = sidebar_width,
             },
         },
     }
