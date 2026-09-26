@@ -3,6 +3,12 @@
 -- Add any additional options here
 vim.g.lazyvim_rust_diagnostics = "rust-analyzer"
 
+-- 不用 python / perl / ruby 写的远程插件，关掉 provider 省去启动探测
+-- （剪贴板 unnamedplus 由 LazyVim 默认设置，SSH 下会自动关闭，无需再写）
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 -- 显式用 snacks 作为搜索选择器（<leader><space> 等）。
 -- 本配置 lazyvim.json 的 install_version=7，LazyVim 会沿用旧默认 picker=fzf；
 -- 而 fzf-lua 从 Snacks dashboard 打开文件时不会清掉 dashboard 底层那个空窗，
