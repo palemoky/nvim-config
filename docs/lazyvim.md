@@ -153,12 +153,7 @@ LazyGit 本身不内置 AI 生成 commit 功能，通过它的 `customCommands` 
 | `Ctrl+a` | AI 生成 commit message(Claude) | 文件面板   |
 | `Ctrl+t` | AI 检测并修复 md 文件的错别字 | 文件面板 |
 
-涉及两个文件：
-
-| 文件                                               | 作用                                                         |
-| -------------------------------------------------- | ------------------------------------------------------------ |
-| `~/.local/bin/lazygit-ai-commit`                   | 取 `git diff --cached` 喂给 `claude -p`，输出规范化的 commit 信息 (剥掉代码围栏/首尾空行) |
-| `~/Library/Application Support/lazygit/config.yml` | 绑定 `Ctrl+a` → 执行 `msg="$(lazygit-ai-commit)" && git commit -e -m "$msg"` |
+脚本与 lazygit 配置都由 chezmoi 管理，细节见 dotfiles 仓库的 `docs/lazygit.md`。
 
 ### 其它常用
 

@@ -2,7 +2,8 @@
 
 ## 一、备份配置
 
-配置在 `~/.config/nvim`，它已经是个 git 仓库，但远程默认指向 LazyVim 官方模板，需要通过 `git remote set-url origin <url>` 来绑定为自己的仓库。
+配置在 `~/.config/nvim`，是独立的 git 仓库（`palemoky/nvim-config`）。
+其余 dotfiles（zsh、git、lazygit、ghostty 等）由 chezmoi 统一管理，并把本仓库作为 external 引用，新机器上 `chezmoi init --apply` 会自动 clone 到这里。
 
 
 
@@ -12,13 +13,7 @@
 
 - [LazyVim](./docs/lazyvim.md)
 
-- [LazyGit](./docs/lazygit.md)
-
-- [LazyDocker](./docs/lazydocker.md)
-
-- [Yazi](./docs/yazi.md)
-
-- [fzf](./docs/fzf.md)
+- LazyGit / LazyDocker / Yazi / fzf：见 dotfiles 仓库的 `docs/`（`chezmoi cd` 进入）
 
 ## 三、终端字体
 
