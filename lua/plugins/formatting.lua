@@ -72,6 +72,8 @@ return {
         "golangci-lint",
         "php-cs-fixer",
         "phpstan",
+        -- 非 mkdocs 目录下的 markdown 格式化用它（LazyVim 的 prettier extra 未启用）
+        "prettier",
       },
     },
   },
