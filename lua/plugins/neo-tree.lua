@@ -9,6 +9,23 @@ local function sidebar_width()
     end
 end
 
+-- neo-tree 只在打开时算一次宽度；终端尺寸变化后按百分比重新调整。
+-- 注意：不能写进 spec 的 init —— lazy.nvim 里后写的 init 会整个覆盖 LazyVim neo-tree extra 的 init，
+-- 而那个 init 负责 `nvim .` 时用 neo-tree 接管目录，被覆盖后就会退回 netrw。
+vim.api.nvim_create_autocmd("VimResized", {
+    group = vim.api.nvim_create_augroup("neo_tree_percent_width", { clear = true }),
+    callback = function()
+        local width = sidebar_width()
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+            local buf = vim.api.nvim_win_get_buf(win)
+            if vim.bo[buf].filetype == "neo-tree"
+                and vim.api.nvim_win_get_config(win).relative == "" then
+                vim.api.nvim_win_set_width(win, width)
+            end
+        end
+    end,
+})
+
 return {
     {
         "nvim-neo-tree/neo-tree.nvim",
@@ -18,22 +35,6 @@ return {
             "nvim-tree/nvim-web-devicons",
             "MunifTanjim/nui.nvim",
         },
-        init = function()
-            -- neo-tree 只在打开时算一次宽度；终端尺寸变化后按百分比重新调整
-            vim.api.nvim_create_autocmd("VimResized", {
-                group = vim.api.nvim_create_augroup("neo_tree_percent_width", { clear = true }),
-                callback = function()
-                    local width = sidebar_width()
-                    for _, win in ipairs(vim.api.nvim_list_wins()) do
-                        local buf = vim.api.nvim_win_get_buf(win)
-                        if vim.bo[buf].filetype == "neo-tree"
-                            and vim.api.nvim_win_get_config(win).relative == "" then
-                            vim.api.nvim_win_set_width(win, width)
-                        end
-                    end
-                end,
-            })
-        end,
         opts = {
             filesystem = {
                 filtered_items = {
