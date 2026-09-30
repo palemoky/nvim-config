@@ -2,6 +2,12 @@ return {
   {
     "mistweaverco/kulala.nvim",
     ft = { "http", "rest" },
+    -- 插件自带的 lazy.lua 会追加 event = { "SessionLoadPost", "VimLeavePre" }，
+    -- 导致任何文件 :wq / ZZ 时都会加载 kulala（装 tree-sitter、下载 backend），退出卡在 COMMAND。
+    -- event 是列表字段会被合并，只能用函数整体覆盖掉，保持仅按 ft 懒加载。
+    event = function()
+      return {}
+    end,
     keys = {
       { "<leader>R", "", desc = "+Rest (kulala)", ft = { "http", "rest" } },
       { "<leader>Rs", function() require("kulala").run() end, desc = "Send request", ft = { "http", "rest" } },
